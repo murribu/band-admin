@@ -14,19 +14,20 @@ class CreateBandsTables extends Migration
     {
         Schema::create('bands', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('slug')->unique();
             $table->string('name');
             $table->string('domain');
             $table->timestamps();
         });
         Schema::create('roles', function($table) {
             $table->increments('id');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('description');
             $table->timestamps();
         });
         Schema::create('permissions', function($table) {
             $table->increments('id');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('description');
             $table->timestamps();
         });

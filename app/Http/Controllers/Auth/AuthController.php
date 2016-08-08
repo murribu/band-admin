@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Auth;
+use DB;
 use Session;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -10,8 +11,10 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Socialite;
 
+use App\Band;
 use App\FacebookToken;
 use App\FacebookUser;
+use App\Role;
 use App\User;
 
 
@@ -84,12 +87,26 @@ class AuthController extends Controller
             $facebook_user->avatar = $login_user->avatar;
             $facebook_user->facebook_id = $login_user->id;
             $facebook_user->save();
-            $user = new User;
-            $user->facebook_user_id = $facebook_user->id;
+            $user = User::where('email', $login_user->email)->first();
+            if (!$user){
+                $user = new User;
+                $user->email = $login_user->email;
+                $user->name = $login_user->name;
+            }
         }
         $user->last_login = date("Y-m-d H:i:s");
         $user->save();
 
+        if (count($user->roles) == 0){
+            //Create a band for this user and make them the admin of it
+            $role = Role::where('slug', 'band-administrator')->first();
+            $band = new Band;
+            $band->name = $user->name. "'s Band";
+            $band->slug = Band::findSlug();
+            $band->save();
+            $user->assignRole($role, $band);
+        }
+        
         Auth::loginUsingId($user->id);
         return view('killwindow');
     }
