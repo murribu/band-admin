@@ -6,7 +6,7 @@
             </div>
 
             <div class="profile-info" ng-show="profile.logged_in">
-                <div>{{profile.fullname}}</div>
+                <div>{{profile.name}}</div>
 
                 <i class="zmdi"></i>
             </div>
@@ -22,10 +22,13 @@
             <a data-ui-sref="login" href="#" onclick="window.open('/auth/facebook','auth','width=500,height=450');return false;"><i class="zmdi zmdi-sign-in"></i> Login</a>
         </li>
         <li data-ui-sref-active="active" ng-show="profile.logged_in">
-            <a data-ui-sref="details" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-format-underlined"></i> Band Details</a>
+            <a data-ui-sref="login" href="#" onclick="window.open('/auth/logout','auth','width=500,height=450');return false;"><i class="zmdi zmdi-flip"></i> Logout</a>
         </li>
         <li data-ui-sref-active="active" ng-show="profile.logged_in">
-            <a data-ui-sref="schedule" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-format-underlined"></i> Schedule</a>
+            <a data-ui-sref="details" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-ruler"></i> Band Details</a>
+        </li>
+        <li data-ui-sref-active="active" ng-show="profile.logged_in">
+            <a data-ui-sref="schedule" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-calendar-note"></i> Schedule</a>
         </li>
     </ul>
 </div>

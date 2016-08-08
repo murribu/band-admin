@@ -110,6 +110,12 @@ class AuthController extends Controller
         return $return;
     }
     
+    public function logout(){
+        Auth::logout();
+        
+        return view('killwindow');
+    }
+    
     public function loginMe(){
         $user = Auth::user();
         if ($user){

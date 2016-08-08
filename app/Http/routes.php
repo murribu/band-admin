@@ -15,7 +15,9 @@ Route::get('auth/facebook', 'Auth\AuthController@redirectToProvider');
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleProviderCallback');
 
 Route::get('auth/me', 'Auth\AuthController@getMe');
-Route::get('auth/login', 'Auth\AuthController@loginMe');
+Route::get('auth/logout', 'Auth\AuthController@logout');
+
+// Route::get('auth/login', 'Auth\AuthController@loginMe');
 
 Route::get('/', function () {
     return view('home');

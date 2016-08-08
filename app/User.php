@@ -6,6 +6,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    
+    use HasPermissionsTrait;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -26,5 +29,9 @@ class User extends Authenticatable
     
     public function facebook_user(){
         return $this->belongsTo('App\FacebookUser');
+    }
+    
+    public function roles(){
+        return $this->belongsToMany('App\Role');
     }
 }

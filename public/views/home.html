@@ -17,13 +17,13 @@
                 </div>
             </div>
             
-            <div class="mini-charts">
+            <div class="mini-charts" ng-show="profile.logged_in">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="mini-charts-item bgm-bluegray">
                             <div class="clearfix">
                                 <div class="count">
-                                    <h2>Howdy</h2>
+                                    <h2>Howdy, {{profile.name}}</h2>
                                 </div>
                             </div>
                         </div>
