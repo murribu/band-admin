@@ -5,7 +5,7 @@ materialAdmin
 
     .controller('materialadminCtrl', function($timeout, $scope, $state, growlService, profileService){
         //Welcome Message
-        growlService.growl('Welcome back Band Admin!', 'inverse')
+        // growlService.growl('Welcome to Band Admin!', 'inverse')
         
         
         // Detact Mobile Browser

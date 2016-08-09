@@ -76,36 +76,8 @@ class AuthController extends Controller
     
     public function handleProviderCallback(){
         $login_user = Socialite::driver('facebook')->user();
-
-        $facebook_user = FacebookUser::where('facebook_id', $login_user->id)->first();
-        if ($facebook_user){
-            $user = $facebook_user->user;
-        }else{
-            $facebook_user = new FacebookUser;
-            $facebook_user->name = $login_user->name;
-            $facebook_user->email = $login_user->email;
-            $facebook_user->avatar = $login_user->avatar;
-            $facebook_user->facebook_id = $login_user->id;
-            $facebook_user->save();
-            $user = User::where('email', $login_user->email)->first();
-            if (!$user){
-                $user = new User;
-                $user->email = $login_user->email;
-                $user->name = $login_user->name;
-            }
-        }
-        $user->last_login = date("Y-m-d H:i:s");
-        $user->save();
-
-        if (count($user->roles) == 0){
-            //Create a band for this user and make them the admin of it
-            $role = Role::where('slug', 'band-administrator')->first();
-            $band = new Band;
-            $band->name = $user->name. "'s Band";
-            $band->slug = Band::findSlug();
-            $band->save();
-            $user->assignRole($role, $band);
-        }
+        
+        $user = User::create_from_facebook_login($login_user);
         
         Auth::loginUsingId($user->id);
         return view('killwindow');

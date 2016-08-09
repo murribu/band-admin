@@ -1,34 +1,32 @@
-<header id="header" data-current-skin={{mactrl.currentSkin}} data-ng-include="'template/header.html'" data-ng-controller="bandCtrl as bctrl"></header>
+<div class="container" data-ng-controller="bandCtrl as bctrl">
+    <div class="block-header">
+        <h2>Dashboard</h2>
 
-<section id="main">
-    <aside id="sidebar" data-ng-include="'template/sidebar-left.html'" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }"></aside>
+    </div>
 
-    <section id="content">
-
-        <div class="container">
-            <div class="block-header">
-                <h2>Dashboard</h2>
-
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h2>Band Details</h2>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header">
+            <h2>Band Members</h2>
         </div>
-    </section>
-</section>
-
-<footer id="footer" data-ng-include="'template/footer.html'"></footer>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in bctrl.band.users">
+                        <td>{{user.name}}</td>
+                        <td><a data-ui-sref="band.editmember({email: user.email})">{{user.email}}</a></td>
+                        <td>{{user.roles[0] ? user.roles[0].description : ''}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <a class="btn btn-primary" data-ui-sref="band.addmember" data-ng-click="mactrl.sidebarStat($event)">Add a Member</a>
+        </div>
+    </div>
+</div>

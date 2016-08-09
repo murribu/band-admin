@@ -22,3 +22,11 @@ Route::get('auth/logout', 'Auth\AuthController@logout');
 Route::get('/', function () {
     return view('home');
 });
+
+
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('/band', 'BandController@getBand');
+    Route::post('/band/members/add', 'BandController@postMember');
+    Route::post('/band/members/edit', 'BandController@postMember');
+    
+});

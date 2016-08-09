@@ -4,13 +4,15 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use App\Band;
+use App\BandMember;
 use App\User;
 
-class ExampleTest extends TestCase
+class BandTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testBasicExample() {
+    public function testBandMembersExample() {
         
         $args = (object)array(
             'token' => "Bunk-Token",
@@ -24,7 +26,15 @@ class ExampleTest extends TestCase
         );
         
         $user = User::create_from_facebook_login($args);
-        $this->visit('/')
-             ->see('material');
+        
+        $this->be($user);
+        $this->visit('/band')
+            ->see('Jorge Smith\'s Band');
+            
+        $this->post('/band/members/add', ['email' => 'paulo@smith.com'])
+            ->see('success');
+        // $this->visit('/band')
+            // ->see('paulo@smith.com');
+            
     }
 }

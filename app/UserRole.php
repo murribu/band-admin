@@ -9,11 +9,15 @@ class UserRole extends Model {
     
     protected $fillable = ['user_id', 'role_id', 'band_id'];
     
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function band(){
+        return $this->belongsTo('App\Band');
     }
     
     public function role(){
         return $this->belongsTo('App\Role');
+    }
+    
+    public function user(){
+        return $this->belongsTo('App\User');
     }
 }

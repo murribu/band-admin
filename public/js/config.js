@@ -42,9 +42,25 @@ materialAdmin
             // BAND DETAILS
             //------------------------------
 
-            .state('details', {
+            
+            .state ('band', {
+                url: '/band',
+                templateUrl: 'views/common.html'
+            })
+            
+            .state('band.details', {
                 url: '/details',
                 templateUrl: 'views/band-details.html'
+            })
+            
+            .state('band.addmember', {
+                url: '/members/add',
+                templateUrl: 'views/band-add-member.html'
+            })
+            
+            .state('band.editmember', {
+                url: '/members/:email',
+                templateUrl: 'views/band-add-member.html'
             })
             
             //------------------------------
