@@ -1,9 +1,21 @@
 <div class="container" data-ng-controller="bandCtrl as bctrl">
     <div class="block-header">
         <h2>Dashboard</h2>
-
     </div>
-
+    <div class="card">
+        <div class="card-header">
+            <h2>Band Details</h2>
+        </div>
+        <div class="card-body card-padding">
+            <div class="form-group row">
+                <label class="form-label control-label col-xs-12 col-sm-2" for="name">Name</label>
+                <div class="col-xs-12 col-sm-10">
+                    <input class="form-control input-lg" name="name" ng-model="bctrl.band.name" />
+                </div>
+            </div>
+            <button class="btn btn-primary" ng-click="bctrl.editband()">Save Details</button>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header">
             <h2>Band Members</h2>

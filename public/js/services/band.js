@@ -7,6 +7,15 @@ materialAdmin
               });
         };
         
+        this.edit = function(sent){
+            return $http({
+                method: 'post',
+                url: '/band/edit',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: $.param(sent)
+            });
+        };
+        
         this.getMember = function(email){
             return $http({
                 method: 'get',

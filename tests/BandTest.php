@@ -57,5 +57,8 @@ class BandTest extends TestCase
         //If the user has linked their facebook account, don't allow any edits
         $response = $this->call('POST', 'band/members/edit', ['oldemail' => 'jorge@smith.com', 'newemail' => 'jorge@jones.com']);
         $this->assertEquals($response->getStatusCode(), 406);
+        
+        $this->post('/band/edit', ['name' => 'The Trogdorlites'])
+            ->seeJson(['name' => 'The Trogdorlites']);
     }
 }

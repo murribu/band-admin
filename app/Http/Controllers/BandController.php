@@ -29,16 +29,27 @@ class BandController extends Controller {
     
     public function getMember($email){
         $user = Auth::user();
-        return User::whereRaw('id in (select user_id from user_roles where band_id = ? )', array($user->user_roles[0]->band_id))
+        $ret = User::whereRaw('id in (select user_id from user_roles where band_id = ? )', array($user->band()->id))
             ->where('email', $email)
             ->first();
+        return $ret;
+    }
+    
+    public function postBand(){
+        $user = Auth::user();
+        $band = $user->band();
+        if ($user->hasPermission('manage-details', $band)){
+            $band = $band->edit(Input::all());
+            return $band;
+        }else{
+            return Response::json('You do not have access to perform this function', 403);
+        }
     }
     
     public function postMember(){
         $user = Auth::user();
         $band = $user->band();
-        $test = $user->hasPermission('manage-band-users', $band);
-        if ($user->hasPermission('manage-band-users', $band) || $user->can('manage-all-users', $band)){
+        if ($user->hasPermission('manage-band-users', $band) || $user->hasPermission('manage-all-users', $band)){
             if (Input::has('oldemail')){
                 //update
                 $ret = $band->editMember(Input::all());
@@ -56,7 +67,7 @@ class BandController extends Controller {
                 }
             }
         }else{
-            return abort(403);
+            return Response::json('You do not have access to perform this function', 403);
         }
     }
 }

@@ -15,6 +15,16 @@ class Band extends Model {
         return $this->belongsToMany('App\User', 'user_roles', 'band_id', 'user_id');
     }
     
+    public function edit($input){
+        if (isset($input['name'])){
+            $this->name = $input['name'];
+            $this->slug = Band::findSlug($input['name']);
+        }
+        $this->save();
+        
+        return $this;
+    }
+    
     /*
         function editMember
             $input['oldemail']
@@ -35,7 +45,12 @@ class Band extends Model {
                 }
                 return ['success' => '1'];
             }else{
-                return ['error' => 406, 'message' => 'duplicate email'];
+                $msg = '';
+                foreach($validator->errors()->all() as $m){
+                    $msg .= $m.',';
+                }
+                $msg = substr($msg,0,-1);
+                return ['error' => 406, 'message' => $msg];
             }
         }else{
             return ['error' => 406, 'message' => 'This user was not found in your band'];
@@ -62,7 +77,12 @@ class Band extends Model {
             
             return ['success' => '1'];
         }else{
-            return ['error' => 406, 'message' => 'duplicate email'];
+            $msg = '';
+            foreach($validator->errors()->all() as $m){
+                $msg .= $m.',';
+            }
+            $msg = substr($msg,0,-1);
+            return ['error' => 406, 'message' => $msg];
         }
     }
 }

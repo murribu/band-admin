@@ -17,7 +17,7 @@ Route::get('auth/facebook/callback', 'Auth\AuthController@handleProviderCallback
 Route::get('auth/me', 'Auth\AuthController@getMe');
 Route::get('auth/logout', 'Auth\AuthController@logout');
 
-// Route::get('auth/login', 'Auth\AuthController@loginMe');
+Route::get('auth/login/{id?}', 'Auth\AuthController@loginMe');
 
 Route::get('/', function () {
     return view('home');
@@ -27,6 +27,8 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/band', 'BandController@getBand');
     Route::get('/band/members/{email}', 'BandController@getMember');
+    
+    Route::post('/band/edit', 'BandController@postBand');
     
     Route::post('/band/members/add', 'BandController@postMember');
     Route::post('/band/members/edit', 'BandController@postMember');

@@ -39,9 +39,15 @@ class User extends Authenticatable
     }
     
     public function band(){
+        return $this->bands()[0];
+    }
+    
+    public function bands(){
         return Band::join('user_roles', 'bands.id', '=', 'user_roles.band_id')
+            ->where('user_roles.user_id', $this->id)
+            ->select('bands.*')
             ->orderBy('user_roles.active', 'desc')
-            ->first();
+            ->get();
     }
     
     public function permissions($band){
@@ -52,7 +58,7 @@ class User extends Authenticatable
     }
     
     public function givePermissionTo(Permission $permission, Band $band){
-        UserPermission::firstOrCreate([
+        $up = UserPermission::firstOrCreate([
             'permission_id' => $permission->id,
             'band_id'       => $band->id,
             'user_id'       => $this->id
@@ -79,8 +85,8 @@ class User extends Authenticatable
         if (is_string($band)){
             $band = Band::where('slug', $band)->first();
         }
-        
-        return UserPermission::where('band_id', $band->id)->where('permission_id', $permission->id)->where('user_id', $this->id)->count() > 0;
+        $ret = UserPermission::where('band_id', $band->id)->where('permission_id', $permission->id)->where('user_id', $this->id)->count() > 0;
+        return $ret;
     }    
     
     public static function create_from_facebook_login($login_user){
@@ -153,8 +159,7 @@ class User extends Authenticatable
         }
         if ($band && $role){
             
-            UserRole::firstOrCreate(['user_id' => $this->id, 'band_id' => $band->id, 'role_id' => $role->id]);
-            
+            $ur = UserRole::firstOrCreate(['user_id' => $this->id, 'band_id' => $band->id, 'role_id' => $role->id]);
             foreach($role->permissions() as $permission){
                 $this->givePermissionTo($permission, $band);
             }

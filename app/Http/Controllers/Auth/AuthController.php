@@ -88,12 +88,17 @@ class AuthController extends Controller
         $return = [
             'logged_in' => 0,
         ];
-        if ($user && $user->facebook_user){
-                
-            $return['email'] = $user->facebook_user->email;
-            $return['name'] = $user->facebook_user->name;
-            $return['avatar'] = $user->facebook_user->avatar;
+        if ($user){
             $return['logged_in'] = 1;
+            $return['email'] = $user->email;
+            $return['name'] = $user->name;
+            if ($user->facebook_user){
+                $return['email'] = $user->facebook_user->email;
+                $return['name'] = $user->facebook_user->name;
+                $return['avatar'] = $user->facebook_user->avatar;
+            }
+            $return['bands'] = $user->bands();
+            $return['band'] = $user->band();
         }
         
         return $return;
@@ -105,14 +110,14 @@ class AuthController extends Controller
         return view('killwindow');
     }
     
-    public function loginMe(){
+    public function loginMe($id = 1){
         $user = Auth::user();
         if ($user){
             echo('logged in');
         }else{
             echo('logging in...');
         }
-        $user = Auth::loginUsingId(1);
+        $user = Auth::loginUsingId($id);
         return $user;
     }
 }
