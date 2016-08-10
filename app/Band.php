@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use DB;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,9 +25,14 @@ class Band extends Model {
             ->whereRaw('id in (select user_id from user_roles where band_id = ?)', array($this->id))
             ->first();
         if ($user){
-            if (User::validate(['email' => $input['newemail']])){
-                $user->email = $input['newemail'];
-                $user->save();
+            $validator = $user->validate(['email' => $input['newemail']]);
+            if (count($validator->errors()) == 0){
+                if ($user->facebook_user_id){
+                    return ['error' => 406, 'message' => 'This user has already linked their facebook account, so their email address cannot be edited.'];
+                }else{
+                    $user->email = $input['newemail'];
+                    $user->save();
+                }
                 return ['success' => '1'];
             }else{
                 return ['error' => 406, 'message' => 'duplicate email'];
@@ -37,7 +43,9 @@ class Band extends Model {
     }
     
     public function addMember($email, $role = 'band-member'){
-        if (User::validate(['email' => $email])){
+        $user = new User;
+        $validator = $user->validate(['email' => $email]);
+        if (count($validator->errors()) == 0){
             $user = User::where('email', $email)->first();
             if (is_string($role)){
                 $role = Role::where('slug', $role)->first();

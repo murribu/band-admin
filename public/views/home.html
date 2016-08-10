@@ -20,11 +20,29 @@
             <div class="mini-charts" ng-show="profile.logged_in">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="mini-charts-item bgm-bluegray">
-                            <div class="clearfix">
-                                <div class="count">
-                                    <h2>Howdy, {{profile.name}}</h2>
-                                </div>
+                        <div class="card">
+                            <div class="card-header bgm-bluegray">
+                                <h2>Howdy, {{profile.name}}</h2>
+                            </div>
+                            <div class="card-body card-padding" ng-show="count(profile.bands) > 1">
+                                You're a part of these bands:
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="band in profile.bands">
+                                            <td>{{band.name}}</td>
+                                            <td>
+                                                <button class="btn btn-primary">Leave this band</button>
+                                                <button class="btn btn-primary">Administrate this band</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,7 @@ class CreateFacebookTables extends Migration
             $table->string('email');
             $table->string('gender');
             $table->string('avatar');
-            $table->string('facebook_id');
+            $table->string('facebook_id')->unique();
             $table->timestamps();
         });
         Schema::create('facebook_tokens', function(Blueprint $table) {
@@ -43,10 +43,11 @@ class CreateFacebookTables extends Migration
      */
     public function down()
     {
-        Schema::drop('facebook_users');
-        Schema::drop('facebook_tokens');
         Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_facebook_user_id_foreign');
             $table->dropColumn('facebook_user_id');
         });
+        Schema::drop('facebook_tokens');
+        Schema::drop('facebook_users');
     }
 }

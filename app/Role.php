@@ -12,10 +12,9 @@ class Role extends Model {
         return Permission::whereRaw('id in (select permission_id from role_permissions where role_id = ?)', array($this->id))->get();
     }
     
-    public function givePermissionTo(Permission $permission, Band $band){
-        UserPermission::firstOrCreate([
+    public function givePermissionTo(Permission $permission){
+        RolePermission::firstOrCreate([
             'permission_id' => $permission->id,
-            'band_id'       => $band->id,
             'role_id'       => $this->id
         ]);
         return 1;

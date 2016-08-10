@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use DB;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Validator;
@@ -32,14 +33,15 @@ class User extends Authenticatable
         'email' => 'required|unique:users,email'
     ];
     
-    public static function validate($data){
+    public function validate($data){
         $v = Validator::make($data, self::$rules);
-        
-        return $v->passes();
+        return $v;
     }
     
     public function band(){
-        return Band::whereRaw('id in (select band_id from user_roles where user_id = ?)', array($this->id))->first();
+        return Band::join('user_roles', 'bands.id', '=', 'user_roles.band_id')
+            ->orderBy('user_roles.active', 'desc')
+            ->first();
     }
     
     public function permissions($band){
@@ -98,17 +100,19 @@ class User extends Authenticatable
                 $user = new User;
                 $user->email = $login_user->email;
                 $user->name = $login_user->name;
+                $user->facebook_user_id = $facebook_user->id;
             }
         }
+        
         $user->last_login = date("Y-m-d H:i:s");
         $user->save();
-
+        
         if (count($user->roles) == 0){
             //Create a band for this user and make them the admin of it
             $role = Role::where('slug', 'band-administrator')->first();
             $band = new Band;
             $band->name = $user->name. "'s Band";
-            $band->slug = Band::findSlug();
+            $band->slug = Band::findSlug($band->name);
             $band->save();
             $user->assignRole($role, $band);
         }

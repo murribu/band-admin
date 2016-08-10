@@ -36,7 +36,7 @@ class BandController extends Controller {
     
     public function postMember(){
         $user = Auth::user();
-        $band = $user->band(); // :(
+        $band = $user->band();
         $test = $user->hasPermission('manage-band-users', $band);
         if ($user->hasPermission('manage-band-users', $band) || $user->can('manage-all-users', $band)){
             if (Input::has('oldemail')){

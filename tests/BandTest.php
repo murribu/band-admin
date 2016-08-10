@@ -12,7 +12,7 @@ class BandTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testBandMembersExample() {
+    public function testBandMembers() {
         
         $args = (object)array(
             'token' => "Bunk-Token",
@@ -30,6 +30,11 @@ class BandTest extends TestCase
         $this->be($user);
         $this->visit('/band')
             ->see('Jorge Smith\'s Band');
+        
+        $this->visit('/auth/me')
+            ->seeJson([
+                'name' => 'Jorge Smith'
+            ]);
             
         $this->post('/band/members/add', ['email' => 'paulo@smith.com'])
             ->see('success');
@@ -39,12 +44,18 @@ class BandTest extends TestCase
             
         $this->visit('/band')
             ->see('paulo@smith.com');
+            
+            
         //Make sure a duplicate email is kicked out
         $response = $this->call('POST', 'band/members/add', ['email' => 'jorge@smith.com']);
         $this->assertEquals($response->getStatusCode(), 406);
         
-        
-        // $this->post('/band/members/edit', ['oldemail' => 'paulo@smith.com', 'email' => 'paulo@jones.com'])
-            // ->see('success');
+        //Can edit a member's email address
+        $this->post('/band/members/edit', ['oldemail' => 'paulo@smith.com', 'newemail' => 'paulo@jones.com'])
+            ->see('success');
+            
+        //If the user has linked their facebook account, don't allow any edits
+        $response = $this->call('POST', 'band/members/edit', ['oldemail' => 'jorge@smith.com', 'newemail' => 'jorge@jones.com']);
+        $this->assertEquals($response->getStatusCode(), 406);
     }
 }

@@ -17,23 +17,26 @@ materialAdmin
         self.editMember = function(){
             if (self.email != ''){
                 $("[name='email']").removeClass('has-error');
-                var sent = {
-                    oldemail: $state.params.email,
-                    newemail: self.email,
-                }
                 if (self.edit){
+                    var sent = {
+                        oldemail: $state.params.email,
+                        newemail: self.email,
+                    }
                     bandService.editMember(sent).success(function(d){
                         growlService.growl('Saved!', 'success');
                         $state.go('band.editmember', {email: self.email });
                     }).error(function(d){
-                        
+                        growlService.growl('Your changes were not saved. There was a problem: ' + d.message, 'danger');
                     });
                 }else{
+                    var sent = {
+                        email: self.email,
+                    }
                     bandService.addMember(sent).success(function(d){
                         growlService.growl('Saved!', 'success');
                         $state.go('band.details');
                     }).error(function(d){
-                        growlService.growl('There was a problem. Your changes were not saved', 'danger');
+                        growlService.growl('Your changes were not saved. There was a problem: ' + d.message, 'danger');
                     });
                 }
             }else{
