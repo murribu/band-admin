@@ -33,9 +33,18 @@ class BandTest extends TestCase
             
         $this->post('/band/members/add', ['email' => 'paulo@smith.com'])
             ->see('success');
+            
+        $this->visit('/band/members/paulo@smith.com')
+            ->see('paulo@smith.com');
+            
         $this->visit('/band')
             ->see('paulo@smith.com');
+        //Make sure a duplicate email is kicked out
         $response = $this->call('POST', 'band/members/add', ['email' => 'jorge@smith.com']);
         $this->assertEquals($response->getStatusCode(), 406);
+        
+        
+        // $this->post('/band/members/edit', ['oldemail' => 'paulo@smith.com', 'email' => 'paulo@jones.com'])
+            // ->see('success');
     }
 }

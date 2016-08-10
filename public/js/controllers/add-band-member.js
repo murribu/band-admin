@@ -5,21 +5,37 @@ materialAdmin
         self.edit = false;
         
         if ($state.params && $state.params.email){
-            self.email = $state.params.email;
-            self.edit = true;
+            bandService.getMember($state.params.email).success(function(d){
+                if (d['email']){
+                    self.email = $state.params.email;
+                    self.edit = true;
+                }else{
+                    $state.go("band.details");
+                }
+            });
         }
-        self.addMember = function(){
+        self.editMember = function(){
             if (self.email != ''){
                 $("[name='email']").removeClass('has-error');
-                let sent = {
-                    email: self.email,
+                var sent = {
+                    oldemail: $state.params.email,
+                    newemail: self.email,
                 }
-                bandService.addMember(sent).success(function(d){
-                    growlService.growl('Saved!', 'success');
-                    $state.go('band.details');
-                }).error(function(d){
-                    
-                });
+                if (self.edit){
+                    bandService.editMember(sent).success(function(d){
+                        growlService.growl('Saved!', 'success');
+                        $state.go('band.editmember', {email: self.email });
+                    }).error(function(d){
+                        
+                    });
+                }else{
+                    bandService.addMember(sent).success(function(d){
+                        growlService.growl('Saved!', 'success');
+                        $state.go('band.details');
+                    }).error(function(d){
+                        growlService.growl('There was a problem. Your changes were not saved', 'danger');
+                    });
+                }
             }else{
                 $(".form-group[data-group='email']").addClass('has-error');
             }

@@ -26,6 +26,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/band', 'BandController@getBand');
+    Route::get('/band/members/{email}', 'BandController@getMember');
+    
     Route::post('/band/members/add', 'BandController@postMember');
     Route::post('/band/members/edit', 'BandController@postMember');
     
