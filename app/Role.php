@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
     
-    use HasPermissionsTrait;
-    public static $permission_pivot_table = 'role_permissions';
-    public static $permission_pivot_key = 'role_id';
 	protected $table = 'roles';
     
     public function permissions(){

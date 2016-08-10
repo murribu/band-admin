@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Validator;
 
 class User extends Authenticatable
 {
@@ -26,6 +27,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    private static $rules = [
+        'email' => 'required|unique:users,email'
+    ];
+    
+    public static function validate($data){
+        $v = Validator::make($data, self::$rules);
+        
+        return $v->passes();
+    }
     
     public function band(){
         return Band::whereRaw('id in (select band_id from user_roles where user_id = ?)', array($this->id))->first();

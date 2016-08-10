@@ -29,11 +29,14 @@ class BandController extends Controller {
     public function postMember(){
         $user = Auth::user();
         $band = $user->band(); // :(
-        DB::enableQueryLog();
         $test = $user->hasPermission('manage-band-users', $band);
-        // dd(DB::getQueryLog());
         if ($user->hasPermission('manage-band-users', $band) || $user->can('manage-all-users', $band)){
-            return $band->addMember(Input::get('email'));
+            $ret = $band->addMember(Input::get('email'));
+            if (isset($ret['error'])){
+                return Response::json($ret, $ret['error']);
+            }else{
+                return $ret;
+            }
         }else{
             return abort(403);
         }

@@ -17,6 +17,8 @@ materialAdmin
                 bandService.addMember(sent).success(function(d){
                     growlService.growl('Saved!', 'success');
                     $state.go('band.details');
+                }).error(function(d){
+                    
                 });
             }else{
                 $(".form-group[data-group='email']").addClass('has-error');

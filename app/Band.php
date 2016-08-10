@@ -15,20 +15,24 @@ class Band extends Model {
     }
     
     public function addMember($email, $role = 'band-member'){
-        $user = User::where('email', $email)->first();
-        if (is_string($role)){
-            $role = Role::where('slug', $role)->first();
+        if (User::validate(['email' => $email])){
+            $user = User::where('email', $email)->first();
+            if (is_string($role)){
+                $role = Role::where('slug', $role)->first();
+            }
+            if (!$role){
+                return ['error' => 500, 'message' => 'Bad Role input'];
+            }
+            if (!$user){
+                $user = new User;
+                $user->email = $email;
+                $user->save();
+            }
+            $user->assignRole($role, $this);
+            
+            return ['success' => '1'];
+        }else{
+            return ['error' => 406, 'message' => 'duplicate email'];
         }
-        if (!$role){
-            throw new Exception('Bad Role input on Band::addMember()');
-        }
-        if (!$user){
-            $user = new User;
-            $user->email = $email;
-            $user->save();
-        }
-        $user->assignRole($role, $this);
-        
-        return ['success' => '1'];
     }
 }
