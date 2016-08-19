@@ -80,6 +80,10 @@ materialAdmin
                 location.href = '/';
             });
         };
+        
+        this.hasPermission = function(permission){
+            return $scope.profile && $scope.profile.permissions && ($.inArray(permission, $scope.profile.permissions) != -1);
+        }
     })
     
     // =========================================================================

@@ -25,11 +25,13 @@ class BandTest extends TestCase
             'avatar' => 'asdf',
         );
         
-        $user = User::create_from_facebook_login($args);
+        $jorge = User::create_from_facebook_login($args);
         
-        $this->be($user);
+        $this->be($jorge);
         $this->visit('/band')
             ->see('Jorge Smith\'s Band');
+            
+        $band = Band::where('name', 'Jorge Smith\'s Band')->first();
         
         $this->visit('/auth/me')
             ->seeJson([
@@ -60,5 +62,16 @@ class BandTest extends TestCase
         
         $this->post('/band/edit', ['name' => 'The Trogdorlites'])
             ->seeJson(['name' => 'The Trogdorlites']);
+
+        $paulo = User::where('email', 'paulo@jones.com')->first();
+        
+        $this->assertTrue($jorge->hasPermission('manage-band-users', $band));
+        $this->assertTrue(!$paulo->hasPermission('manage-band-users', $band));
+        
+        $this->be($paulo);
+        //Paulo should not be able to add a band member
+        $response = $this->call('POST', 'band/members/add', ['email' => 'ringo@miller.com']);
+        $this->assertEquals($response->getStatusCode(), 403);
+        
     }
 }

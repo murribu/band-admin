@@ -22,9 +22,7 @@ class BandController extends Controller {
     
     public function getBand(){
         $user = Auth::user();
-        $band = Band::with('users', 'users.roles')->find($user->user_roles[0]->band_id);
-        
-        return $band;
+        return Band::with('users', 'users.roles')->find($user->user_roles[0]->band_id);
     }
     
     public function getMember($email){
@@ -36,38 +34,23 @@ class BandController extends Controller {
     }
     
     public function postBand(){
-        $user = Auth::user();
-        $band = $user->band();
-        if ($user->hasPermission('manage-details', $band)){
-            $band = $band->edit(Input::all());
-            return $band;
-        }else{
-            return Response::json('You do not have access to perform this function', 403);
-        }
+        $band = Auth::user()->band();
+        return $band->edit(Input::all());
     }
     
     public function postMember(){
         $user = Auth::user();
         $band = $user->band();
-        if ($user->hasPermission('manage-band-users', $band) || $user->hasPermission('manage-all-users', $band)){
-            if (Input::has('oldemail')){
-                //update
-                $ret = $band->editMember(Input::all());
-                if (isset($ret['error'])){
-                    return Response::json($ret, $ret['error']);
-                }else{
-                    return $ret;
-                }
-            }else{
-                $ret = $band->addMember(Input::get('email'));
-                if (isset($ret['error'])){
-                    return Response::json($ret, $ret['error']);
-                }else{
-                    return $ret;
-                }
-            }
+        if (Input::has('oldemail')){
+            //update
+            $ret = $band->editMember(Input::all());
         }else{
-            return Response::json('You do not have access to perform this function', 403);
+            $ret = $band->addMember(Input::get('email'));
+        }
+        if (isset($ret['error'])){
+            return Response::json($ret, $ret['error']);
+        }else{
+            return $ret;
         }
     }
 }

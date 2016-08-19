@@ -99,6 +99,7 @@ class AuthController extends Controller
             }
             $return['bands'] = $user->bands();
             $return['band'] = $user->band();
+            $return['permissions'] = $user->permissions($user->band())->pluck('slug');
         }
         
         return $return;

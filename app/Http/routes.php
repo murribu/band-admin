@@ -27,10 +27,13 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/band', 'BandController@getBand');
     Route::get('/band/members/{email}', 'BandController@getMember');
-    
+});
+
+Route::group(['middleware' => ['auth', 'permission:manage-details']], function(){
     Route::post('/band/edit', 'BandController@postBand');
-    
+});
+
+Route::group(['middleware' => ['auth', 'permission:manage-band-users']], function(){
     Route::post('/band/members/add', 'BandController@postMember');
     Route::post('/band/members/edit', 'BandController@postMember');
-    
 });
