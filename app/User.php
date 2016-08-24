@@ -33,8 +33,10 @@ class User extends Authenticatable
         'email' => 'required|unique:users,email'
     ];
     
-    public function validate($data){
-        $v = Validator::make($data, self::$rules);
+    public function validate($data, $user_id = 0){
+        $rules = self::$rules;
+        $rules['email'] .= ','.$user_id;
+        $v = Validator::make($data, $rules);
         return $v;
     }
     

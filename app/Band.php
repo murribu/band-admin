@@ -35,12 +35,15 @@ class Band extends Model {
             ->whereRaw('id in (select user_id from user_roles where band_id = ?)', array($this->id))
             ->first();
         if ($user){
-            $validator = $user->validate(['email' => $input['newemail']]);
+            $validator = $user->validate(['email' => $input['newemail']], $user->id);
             if (count($validator->errors()) == 0){
                 if ($user->facebook_user_id){
-                    return ['error' => 406, 'message' => 'This user has already linked their facebook account, so their email address cannot be edited.'];
+                    return ['error' => 406, 'message' => 'This user has already linked their facebook account, so their info cannot be edited.'];
                 }else{
                     $user->email = $input['newemail'];
+                    if (isset($input['name'])){
+                        $user->name = $input['name'];
+                    }
                     $user->save();
                 }
                 return ['success' => '1'];

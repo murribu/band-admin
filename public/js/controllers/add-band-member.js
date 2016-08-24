@@ -2,12 +2,14 @@ materialAdmin
     .controller('addBandMemberCtrl', function($timeout, $scope, $state, growlService, bandService){
         var self = this;
         self.email = '';
+        self.name = '';
         self.edit = false;
         
         if ($state.params && $state.params.email){
             bandService.getMember($state.params.email).success(function(d){
                 if (d['email']){
-                    self.email = $state.params.email;
+                    self.email = d['email'];
+                    self.name = d['name'];
                     self.edit = true;
                 }else{
                     $state.go("band.details");
@@ -21,6 +23,7 @@ materialAdmin
                     var sent = {
                         oldemail: $state.params.email,
                         newemail: self.email,
+                        name: self.name,
                     }
                     bandService.editMember(sent).success(function(d){
                         growlService.growl('Saved!', 'success');

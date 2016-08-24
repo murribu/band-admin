@@ -73,5 +73,15 @@ class BandTest extends TestCase
         $response = $this->call('POST', 'band/members/add', ['email' => 'ringo@miller.com']);
         $this->assertEquals($response->getStatusCode(), 403);
         
+        $paulos_name = 'Paulo Jones';
+        
+        $this->be($jorge);
+        
+        $this->post('/band/members/edit', ['oldemail' => 'paulo@jones.com', 'newemail' => 'paulo@jones.com', 'name' => $paulos_name])
+            ->see('success');
+        
+        $paulo = User::where('email', 'paulo@jones.com')->first();
+        
+        $this->assertEquals($paulo->name, $paulos_name);
     }
 }
