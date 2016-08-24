@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 use Response;
 
 use App\Band;
+use App\Event;
 use App\Permission;
 use App\User;
 
@@ -52,5 +53,27 @@ class BandController extends Controller {
         }else{
             return $ret;
         }
+    }
+    
+    public function getEvents(){
+        $user = Auth::user();
+        $band = $user->band();
+        
+        return $band->events;
+    }
+    
+    public function getEvent($slug){
+        $band = Auth::user()->band();
+        
+        return Event::where('band_id', $band->id)
+            ->where('slug', $slug)
+            ->first();
+    }
+    
+    public function postEvent(){
+        $user = Auth::user();
+        $band = $user->band();
+        
+        return $band->createEvent(Input::all());
     }
 }

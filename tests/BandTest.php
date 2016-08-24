@@ -3,9 +3,11 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Faker\Factory as Faker;
 
 use App\Band;
 use App\BandMember;
+use App\Event;
 use App\User;
 
 class BandTest extends TestCase
@@ -83,5 +85,54 @@ class BandTest extends TestCase
         $paulo = User::where('email', 'paulo@jones.com')->first();
         
         $this->assertEquals($paulo->name, $paulos_name);
+    }
+    
+    public function testEvents(){
+        $faker = Faker::create();
+        
+        $args = (object)array(
+            'token' => "Bunk-Token",
+            'refreshToken' => null,
+            'expiresIn' => "5110395",
+            'id' => "12345678912345678",
+            'nickname' => null,
+            'name' => 'Jorge Smith',
+            'email' => 'jorge@smith.com',
+            'avatar' => 'asdf',
+        );
+        
+        $jorge = User::create_from_facebook_login($args);
+        
+        $this->be($jorge);
+        
+        $this->visit('/events')
+            ->see('[]');
+            
+        $event = [
+            'band_id' => $jorge->band()->id,
+            'start_time_local' => $faker->dateTimeThisYear->format("Y-m-d H:i:s"),
+            'timezone' => 'Central',
+            'venue' => $faker->lastName,
+            'address1' => $faker->streetAddress,
+            'address2' => $faker->secondaryAddress,
+            'city' => $faker->city,
+            'state' => $faker->stateAbbr,
+            'zip' => $faker->postcode,
+            'contact' => $faker->name,
+            'description' => $faker->paragraph
+        ];
+        
+        $response = $this->call('POST', 'events/new', $event);
+        $json = json_decode($response->getContent());
+
+        $event['slug'] = $json->slug;
+
+        // $response = $this->call('GET', '/events/'.$event['slug']);
+
+        // dd($response->getContent());
+        
+        $this->visit('/events/'.$event['slug'])
+            ->see($event['venue']);
+            
     }
 }

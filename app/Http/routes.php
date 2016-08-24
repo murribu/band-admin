@@ -24,9 +24,19 @@ Route::get('/', function () {
 });
 
 
+
+Route::group(['middleware' => ['auth', 'permission:manage-schedule']], function(){
+    Route::post('/events/new', 'BandController@postEvent');
+    
+});
+
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/band', 'BandController@getBand');
     Route::get('/band/members/{email}', 'BandController@getMember');
+    
+    Route::get('/events', 'BandController@getEvents');
+    Route::get('/events/{slug}', 'BandController@getEvent');
+    
 });
 
 Route::group(['middleware' => ['auth', 'permission:manage-details']], function(){

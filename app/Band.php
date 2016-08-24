@@ -15,6 +15,10 @@ class Band extends Model {
         return $this->belongsToMany('App\User', 'user_roles', 'band_id', 'user_id');
     }
     
+    public function events(){
+        return $this->hasMany('App\Event');
+    }
+    
     public function edit($input){
         if (isset($input['name'])){
             $this->name = $input['name'];
@@ -22,7 +26,7 @@ class Band extends Model {
         }
         $this->save();
         
-        return $this;
+        return Band::where('id', $this->id)->with('users','users.roles')->first();
     }
     
     /*
@@ -87,5 +91,10 @@ class Band extends Model {
             $msg = substr($msg,0,-1);
             return ['error' => 406, 'message' => $msg];
         }
+    }
+    
+    public function createEvent($input){
+        $input['band_id'] = $this->id;
+        return Event::create_from_input($input);
     }
 }
