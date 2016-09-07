@@ -10,6 +10,7 @@
                         <th>Venue</th>
                         <th>City, State</th>
                         <th>Date/Time</th>
+                        <th>Show on Web</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,9 +24,12 @@
                         <td>
                             {{bctrl.displayDateTime(e.start_time_local)}}
                         </td>
+                        <td>
+                            {{e.active ? 'Yes' : 'No'}}
+                        </td>
                     </tr>
                     <tr ng-hide="bctrl.events.length">
-                        <td colspan="3" style="text-align:center;">
+                        <td colspan="4" style="text-align:center;">
                             There are no events to show
                         </td>
                     </tr>

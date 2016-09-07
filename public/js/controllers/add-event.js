@@ -38,20 +38,27 @@ materialAdmin
         };
         
         self.editEvent = function(){
+            var sent = {
+                start_time_local: moment(self.e.date).format('YYYY-MM-DD') + ' ' + moment(self.e.t).format('H:mm:00'),
+                venue: self.e.venue,
+                address1: self.e.address1,
+                address2: self.e.address2,
+                city: self.e.city,
+                state: self.e.state,
+                zip: self.e.zip,
+                contact: self.e.contact,
+                description: self.e.description,
+                timezone: self.e.timezone,
+                active: self.e.active,
+            };
             if (!self.edit){
-                var sent = {
-                    start_time_local: moment(self.e.date).format('YYYY-MM-DD') + ' ' + moment(self.e.t).format('H:mm:00'),
-                    venue: self.e.venue,
-                    address1: self.e.address1,
-                    address2: self.e.address2,
-                    city: self.e.city,
-                    state: self.e.state,
-                    zip: self.e.zip,
-                    contact: self.e.contact,
-                    description: self.e.description,
-                    timezone: self.e.timezone
-                };
                 bandService.addEvent(sent).success(function(d){
+                    growlService.growl('Saved!', 'success');
+                    $state.go('band.schedule');
+                });
+            }else{
+                sent['slug'] = self.e.slug;
+                bandService.editEvent(sent).success(function(d){
                     growlService.growl('Saved!', 'success');
                     $state.go('band.schedule');
                 });

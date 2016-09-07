@@ -4,6 +4,13 @@
             <h2>{{bctrl.edit ? "Edit" : "Add"}} an Event</h2>
         </div>
         <div class="card-body card-padding">
+            <div class="form-group" data-group="active">
+                <div class="toggle-switch" data-ts-color="blue">
+                    <label for="ts3" class="ts-label">Show on website</label>
+                    <input id="ts3" type="checkbox" hidden="hidden" ng-model="bctrl.e.active" ng-true-value="1" ng-false-value="0">
+                    <label for="ts3" class="ts-helper"></label>
+                </div>
+            </div>
             <div class="form-group" data-group="venue">
                 <label class="form-label control-label">Venue</label>
                 <div class="fg-line">

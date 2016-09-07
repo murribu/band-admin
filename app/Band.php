@@ -64,6 +64,18 @@ class Band extends Model {
         }
     }
     
+    public function editEvent($input){
+        $event = Event::where('slug', $input['slug'])
+            ->where('band_id', $this->id)
+            ->first();
+        if ($event){
+            $event->update($input);
+            return ['success' => '1'];
+        }else{
+            return ['error' => 406, 'message' => 'This event was not found for your band'];
+        }
+    }
+    
     public function addMember($input, $role = 'band-member'){
         $user = new User;
         $email = $input['email'];

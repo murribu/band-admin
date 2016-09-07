@@ -9,6 +9,6 @@ materialAdmin
         });
         
         self.displayDateTime = function(dt){
-            return moment(dt).format('MMMM d, YYYY h:mm A');
+            return moment(dt).format('MMMM D, YYYY h:mm A');
         }
     });

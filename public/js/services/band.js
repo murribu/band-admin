@@ -63,4 +63,13 @@ materialAdmin
                 data: $.param(sent)
             });
         }
+        
+        this.editEvent = function(sent){
+            return $http({
+                method: 'post',
+                url: '/events/edit',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: $.param(sent)
+            });
+        }
     }]);

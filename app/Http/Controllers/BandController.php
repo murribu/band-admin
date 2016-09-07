@@ -73,7 +73,15 @@ class BandController extends Controller {
     public function postEvent(){
         $user = Auth::user();
         $band = $user->band();
-        
-        return $band->createEvent(Input::all());
+        if (Input::has("slug")){
+            $ret = $band->editEvent(Input::all());
+        }else{
+            $ret = $band->createEvent(Input::all());
+        }
+        if (isset($ret['error'])){
+            return Response::json($ret, $ret['error']);
+        }else{
+            return $ret;
+        }
     }
 }
