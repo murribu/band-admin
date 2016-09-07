@@ -39,7 +39,7 @@ materialAdmin
         
         self.editEvent = function(){
             var sent = {
-                start_time_local: moment(self.e.date).format('YYYY-MM-DD') + ' ' + moment(self.e.t).format('H:mm:00'),
+                start_time_local: moment(self.e.date + ' ' + self.e.t).format('YYYY-MM-DD H:mm:00'),
                 venue: self.e.venue,
                 address1: self.e.address1,
                 address2: self.e.address2,
@@ -69,8 +69,12 @@ materialAdmin
             format: 'h:mm A',
             useCurrent: false,
             defaultDate: new Date(new Date().setHours(19, 0, 0))
+        }).on('dp.change', function(){
+            self.e.t = moment($("#event-date").val() + ' ' + $("#event-time").val()).format('h:mm A');
         });
         $("#event-date").datetimepicker({
             format: 'MMMM D, YYYY',
+        }).on('dp.change', function(){
+            self.e.date = moment($("#event-date").val() + ' ' + $("#event-time").val()).format('MMMM D, YYYY');
         });
     });
