@@ -23,10 +23,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-
-
 Route::group(['middleware' => ['auth', 'permission:manage-schedule']], function(){
-    Route::post('/events/new', 'BandController@postEvent');
+    Route::post('/events/add', 'BandController@postEvent');
+    Route::post('/events/edit', 'BandController@postEvent');
     
 });
 

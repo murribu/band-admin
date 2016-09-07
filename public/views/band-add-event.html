@@ -1,0 +1,78 @@
+<div class="container" data-ng-controller="addEventCtrl as bctrl">
+    <div class="card">
+        <div class="card-header">
+            <h2>{{bctrl.edit ? "Edit" : "Add"}} an Event</h2>
+        </div>
+        <div class="card-body card-padding">
+            <div class="form-group" data-group="venue">
+                <label class="form-label control-label">Venue</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.venue" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="address1">
+                <label class="form-label control-label">Address 1</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.address1" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="address2">
+                <label class="form-label control-label">Address 2</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.address2" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="city">
+                <label class="form-label control-label">City</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.city" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="state">
+                <label class="form-label control-label">State</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.state" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="zip">
+                <label class="form-label control-label">Zip</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.zip" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="timezone">
+                <label class="form-label control-label">Timezone</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.timezone" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="contact">
+                <label class="form-label control-label">Contact</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.contact" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="description">
+                <label class="form-label control-label">Description</label>
+                <div class="fg-line">
+                    <input type="text" class="form-control input-lg" placeholder="" ng-model="bctrl.e.description" ng-readonly="!mactrl.hasPermission('manage-schedule')">
+                </div>
+            </div>
+            <div class="form-group" data-group="date">
+                <label class="form-label control-label">Date</label>
+                <div class="fg-line">
+                    <input id="event-time" class="form-control" ng-model="bctrl.e.date" ng-readonly="!mactrl.hasPermission('manage-schedule')" placeholder="Select Time" />
+                </div>
+            </div>
+            <div class="form-group" data-group="time">
+                <label class="form-label control-label">Time (Local)</label>
+                <div class="fg-line">
+                    <input id="event-time" class="form-control" ng-model="bctrl.e.t" ng-readonly="!mactrl.hasPermission('manage-schedule')" placeholder="Select Time" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <button class="btn btn-primary" ng-click="bctrl.editEvent()">{{bctrl.edit ? "Edit" : "Add"}} Event</button>
+            </div>
+        </div>
+    </div>
+</div>

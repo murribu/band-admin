@@ -1,0 +1,37 @@
+<div class="container" data-ng-controller="scheduleCtrl as bctrl">
+    <div class="card">
+        <div class="card-header">
+            <h2>Schedule</h2>
+        </div>
+        <div class="card-body card-padding">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Venue</th>
+                        <th>City, State</th>
+                        <th>Date/Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="e in bctrl.events">
+                        <td>
+                            <a data-ui-sref="band.editevent({slug: e.slug})">{{e.venue}}</a>
+                        </td>
+                        <td>
+                            {{e.city}}, {{e.state}}
+                        </td>
+                        <td>
+                            {{bctrl.displayDateTime(e.start_time_local)}}
+                        </td>
+                    </tr>
+                    <tr ng-hide="bctrl.events.length">
+                        <td colspan="3" style="text-align:center;">
+                            There are no events to show
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-primary btn-sm waves-effect" data-ui-sref="band.addevent">Add an Event</a>
+        </div>
+    </div>
+</div>

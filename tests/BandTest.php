@@ -109,7 +109,6 @@ class BandTest extends TestCase
             ->see('[]');
             
         $event = [
-            'band_id' => $jorge->band()->id,
             'start_time_local' => $faker->dateTimeThisYear->format("Y-m-d H:i:s"),
             'timezone' => 'Central',
             'venue' => $faker->lastName,
@@ -126,10 +125,6 @@ class BandTest extends TestCase
         $json = json_decode($response->getContent());
 
         $event['slug'] = $json->slug;
-
-        // $response = $this->call('GET', '/events/'.$event['slug']);
-
-        // dd($response->getContent());
         
         $this->visit('/events/'.$event['slug'])
             ->see($event['venue']);

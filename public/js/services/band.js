@@ -40,4 +40,27 @@ materialAdmin
                 data: $.param(sent)
             });
         };
+        
+        this.getEvents = function(){
+            return $http({
+                method: 'get',
+                url: '/events'
+            });
+        };
+        
+        this.getEvent = function(slug){
+            return $http({
+                method: 'get',
+                url: '/events/' + slug
+            });
+        };
+        
+        this.addEvent = function(sent){
+            return $http({
+                method: 'post',
+                url: '/events/add',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: $.param(sent)
+            });
+        }
     }]);
