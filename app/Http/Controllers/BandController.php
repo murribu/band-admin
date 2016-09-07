@@ -46,7 +46,7 @@ class BandController extends Controller {
             //update
             $ret = $band->editMember(Input::all());
         }else{
-            $ret = $band->addMember(Input::get('email'));
+            $ret = $band->addMember(Input::all());
         }
         if (isset($ret['error'])){
             return Response::json($ret, $ret['error']);

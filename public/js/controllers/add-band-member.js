@@ -34,6 +34,7 @@ materialAdmin
                 }else{
                     var sent = {
                         email: self.email,
+                        name: self.name,
                     }
                     bandService.addMember(sent).success(function(d){
                         growlService.growl('Saved!', 'success');

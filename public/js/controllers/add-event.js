@@ -17,12 +17,12 @@ materialAdmin
                         defaultDate: dt
                     });
                     $("#event-date").datetimepicker({
-                        format: 'MMMM d, YYYY',
+                        format: 'MMMM D, YYYY',
                         useCurrent: false,
                         defaultDate: dt
                     });
                     self.e.t = moment(dt).format('h:mm A');
-                    self.e.date = moment(dt).format('MMMM d, YYYY');
+                    self.e.date = moment(dt).format('MMMM D, YYYY');
                     self.edit = true;
                 }else{
                     $state.go("band.schedule");
@@ -64,6 +64,6 @@ materialAdmin
             defaultDate: new Date(new Date().setHours(19, 0, 0))
         });
         $("#event-date").datetimepicker({
-            format: 'MMMM d, YYYY',
+            format: 'MMMM D, YYYY',
         });
     });

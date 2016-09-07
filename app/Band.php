@@ -64,8 +64,10 @@ class Band extends Model {
         }
     }
     
-    public function addMember($email, $role = 'band-member'){
+    public function addMember($input, $role = 'band-member'){
         $user = new User;
+        $email = $input['email'];
+        $name = $input['name'];
         $validator = $user->validate(['email' => $email]);
         if (count($validator->errors()) == 0){
             $user = User::where('email', $email)->first();
@@ -78,6 +80,7 @@ class Band extends Model {
             if (!$user){
                 $user = new User;
                 $user->email = $email;
+                $user->name = $name;
                 $user->save();
             }
             $user->assignRole($role, $this);
