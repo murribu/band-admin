@@ -107,9 +107,9 @@ class User extends Authenticatable
             if (!$user){
                 $user = new User;
                 $user->email = $login_user->email;
-                $user->name = $login_user->name;
-                $user->facebook_user_id = $facebook_user->id;
             }
+            $user->name = $login_user->name;
+            $user->facebook_user_id = $facebook_user->id;
         }
         
         $user->last_login = date("Y-m-d H:i:s");
