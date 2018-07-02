@@ -23,6 +23,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/policy', function () {
+    return 'You get no privacy';
+});
+
 Route::group(['middleware' => ['auth', 'permission:manage-schedule']], function(){
     Route::post('/events/add', 'BandController@postEvent');
     Route::post('/events/edit', 'BandController@postEvent');
